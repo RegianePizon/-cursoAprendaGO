@@ -1,0 +1,24 @@
+//- Exercício:
+//    - Crie uma função que retorne um int
+//    - Crie outra função que retorne um int e uma string
+//    - Chame as duas funções
+//    - Demonstre seus resultados
+
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println(retornaint())
+	fmt.Println(retornastring())
+}
+
+func retornaint() int {
+	return 10
+}
+
+func retornastring() (int, string) {
+	return 10, "dez"
+}
