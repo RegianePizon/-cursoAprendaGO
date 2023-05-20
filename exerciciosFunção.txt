@@ -1,0 +1,301 @@
+- Revisão:
+    - Funções!
+        - Servem para abstrair código
+        - E para reutilizar código
+    - A ordem das coisas é:
+        - func (receiver) identifier (parameters) (returns) { code }
+    - Parâmetros vs. argumentos
+    - Funções variádicas
+        - Múltiplos parâmetros
+        - Múltiplos argumentos
+    - Métodos
+    - Interfaces & polimorfismo
+    - Defer
+        - "Deixa pra depois!"
+    - Returns
+        - Múltiplos returns
+        - Returns com nome (blé!)
+    - Funcs como expressões
+        - Atribuindo uma função a uma variável
+    - Callbacks
+        - Passando uma função como argumento para outra função
+    - Closure
+        - Capturando um scope
+        - Variáveis declaradas em scopes externos são visíveis em scopes internos
+    - Recursividade
+        - Uma função que chama a ela mesma
+        - Fatoriais 
+
+//Exercicio 1
+
+//    - Crie uma função que retorne um int
+//    - Crie outra função que retorne um int e uma string
+//    - Chame as duas funções
+//    - Demonstre seus resultados
+
+
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println(retornaint())
+	fmt.Println(retornastring())
+}
+
+func retornaint() int {
+	return 10
+}
+
+func retornastring() (int, string) {
+	return 10, "Dez"
+}
+
+//Exercicio 2
+
+//- Crie uma função que receba um parâmetro variádico do tipo int e retorne a soma de todos os ints recebidos;
+//- Passe um valor do tipo slice of int como argumento para a função;
+//- Crie outra função, esta deve receber um valor do tipo slice of int e retornar a soma de todos os elementos da slice;
+//- Passe um valor do tipo slice of int como argumento para a função.
+
+package main
+
+import "fmt"
+
+func main() {
+	f := []int{1, 2, 3, 4, 5}
+	fmt.Println("Primeira Função:", função(f...))
+	f2 := []int{1, 2, 3, 4, 5, 6}
+	fmt.Println("Segunda Função:", função2(f2))
+}
+
+func função(x ...int) int {
+	total := 0
+	for _, v := range x {
+		total += v
+	}
+	return total
+}
+
+func função2(x []int) int {
+	total := 0            //variavel para retorno
+	for _, v := range x { // soma dos numeros de entrada
+		total += v
+	}
+	return total // retornando a soma
+}
+
+
+//Exercicio 3
+
+//- Utilize a declaração defer de maneira que demonstre que sua execução só ocorre ao final do contexto ao qual ela pertence.
+
+package main
+
+import "fmt"
+
+func main() {
+	defer fmt.Println("Deixa pra Depois")
+	fmt.Println("Eu sou o Primeiro")
+}
+
+//Exercicio 4
+
+//- Crie um tipo struct "pessoa" que contenha os campos:
+//    - nome
+//    - sobrenome
+//    - idade
+//- Crie um método para "pessoa" que demonstre o nome completo e a idade;
+//- Crie um valor de tipo "pessoa";
+//- Utilize o método criado para demonstrar esse valor.
+
+
+
+package main
+
+import "fmt"
+
+type pessoa struct {
+	nome      string
+	sobrenome string
+	idade     int
+}
+
+func (humano pessoa) demonstrar() {
+	fmt.Println("Nome completo:", humano.nome, humano.sobrenome, "\nIdade:", humano.idade)
+}
+
+func main() {
+	JosedasCouve := pessoa{
+		nome:      "Jose",
+		sobrenome: " Das Couve",
+		idade:     40,
+	}
+	JosedasCouve.demonstrar()
+
+}
+
+//Exercicio 5
+
+//- Crie um tipo "quadrado"
+//- Crie um tipo "círculo"
+//- Crie um método "área" para cada tipo que calcule e retorne a área da figura
+//    - Área do círculo: 2 * π * raio
+//    - Área do quadrado: lado * lado
+//- Crie um tipo "figura" que defina como interface qualquer tipo que tiver o método "área"
+//- Crie uma função "info" que receba um tipo "figura" e retorne a área da figura
+//- Crie um valor de tipo "quadrado"
+//- Crie um valor de tipo "círculo"
+//- Use a função "info" para demonstrar a área do "quadrado"
+//- Use a função "info" para demonstrar a área do "círculo"
+
+
+
+import (
+	"fmt"
+	"math"
+)
+
+func main() {
+	q := quadrado{
+		lado: 5.0,
+	}
+	c := circulo{
+		raio: 5.0,
+	}
+	info(q)
+	info(c)
+}
+
+type quadrado struct {
+	lado float64
+}
+
+func (q quadrado) area() {
+	calculo := q.lado * q.lado
+	fmt.Println("A área do quadrado é:", calculo)
+}
+
+type circulo struct {
+	raio float64
+}
+
+func (c circulo) area() {
+	calculo := math.Pi * 2 * c.raio
+	fmt.Println("A área do circulo é:", calculo)
+}
+
+type figura interface {
+	area()
+}
+
+func info(i figura) {
+	i.area()
+}
+
+
+//Exercicio 6
+
+//- Crie e utilize uma função anônima.
+
+//Resultado:
+package main
+
+import "fmt"
+
+func main() {
+	func() {
+		fmt.Println("Função Anônima")
+	}()
+
+}
+
+//Exercicio 7
+
+//- Atribua uma função a uma variável.
+//- Chame essa função.
+
+//Resultado:
+
+package main
+
+import "fmt"
+
+func main() {
+	x := func() {
+		fmt.Println("Função anônima dentro da variavel x")
+	}
+	x()
+}
+
+//Exercicio 8
+
+//- Crie uma função que retorna uma função.
+//- Atribua a função retornada a uma variável.
+//- Chame a função retornada.
+
+//Resultado:
+
+package main
+
+import "fmt"
+
+func main() {
+	x := função()
+	x()
+}
+
+func função() func() {
+	return func() {
+		fmt.Println("Função dentro de outra função")
+	}
+}
+
+
+//Exercicio 9
+
+//- Callback: passe uma função como argumento a outra função.
+//Resultado:
+package main
+
+import "fmt"
+
+func main() {
+	segunda(primeira)
+
+}
+
+func primeira() {
+	fmt.Println("Primeira Função")
+}
+
+func segunda(s func()) {
+	fmt.Println("Segunda Função como argumento")
+	s()
+}
+
+//Exercicio 10
+
+//- Demonstre o funcionamento de um closure.
+//- Ou seja: crie uma função que retorna outra função, onde esta outra função faz uso de uma variável alem de seu scope.
+
+
+package main
+
+import "fmt"
+
+func main() {
+	c := closure()
+
+	fmt.Println(c())
+	fmt.Println(c())
+
+}
+
+func closure() func() int {
+	x := 0
+	return func() int {
+		x++
+		return x
+	}
+}
